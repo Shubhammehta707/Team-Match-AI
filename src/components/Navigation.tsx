@@ -13,8 +13,8 @@ import {
 } from 'lucide-react';
 
 interface NavigationProps {
-  activeTab: 'dashboard' | 'matching' | 'network' | 'profile';
-  onSelectTab: (tab: 'dashboard' | 'matching' | 'network' | 'profile') => void;
+  activeTab: 'dashboard' | 'matching' | 'network' | 'profile' | 'api';
+  onSelectTab: (tab: 'dashboard' | 'matching' | 'network' | 'profile' | 'api') => void;
   apiConfig: ApiConfig;
   onOpenApiSettings: () => void;
   userName?: string;
@@ -30,14 +30,15 @@ export const Navigation: React.FC<NavigationProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
-  const navItems: { id: 'dashboard' | 'matching' | 'network' | 'profile'; label: string }[] = [
+  const navItems: { id: 'dashboard' | 'matching' | 'network' | 'profile' | 'api'; label: string }[] = [
     { id: 'dashboard', label: 'Dashboard' },
     { id: 'matching', label: 'Find Teammates' },
     { id: 'network', label: 'Explore Network' },
     { id: 'profile', label: 'My Profile' },
+    { id: 'api', label: 'API Console & Docs' },
   ];
 
-  const handleNavClick = (tab: 'dashboard' | 'matching' | 'network' | 'profile') => {
+  const handleNavClick = (tab: 'dashboard' | 'matching' | 'network' | 'profile' | 'api') => {
     onSelectTab(tab);
     setMobileMenuOpen(false);
   };

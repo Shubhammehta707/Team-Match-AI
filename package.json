@@ -14,6 +14,7 @@
   "dependencies": {
     "@google/genai": "^2.4.0",
     "@tailwindcss/vite": "^4.3.3",
+    "@types/cytoscape": "^3.31.0",
     "@vitejs/plugin-react": "^6.1.1",
     "cytoscape": "^3.34.4",
     "dotenv": "^17.2.3",

@@ -17,8 +17,10 @@ import { MatchResults } from './components/MatchResults';
 import { NetworkGraph } from './components/NetworkGraph';
 import { StudentDetailModal } from './components/StudentDetailModal';
 import { ApiSettingsModal } from './components/ApiSettingsModal';
+import { ApiConsole } from './components/ApiConsole';
+import { HandoffDocs } from './components/HandoffDocs';
 import { Footer } from './components/Footer';
-import { Check, ArrowRight, Sparkles, Network } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, Network, Terminal, BookOpen } from 'lucide-react';
 
 const EMPTY_PROFILE: MatchRequest = {
   name: '',
@@ -29,7 +31,8 @@ const EMPTY_PROFILE: MatchRequest = {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'matching' | 'network' | 'profile'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'matching' | 'network' | 'profile' | 'api'>('dashboard');
+  const [apiSubTab, setApiSubTab] = useState<'tester' | 'docs'>('tester');
   const [currentUser, setCurrentUser] = useState<MatchRequest>(EMPTY_PROFILE);
   const [matches, setMatches] = useState<MatchRecommendation[]>([]);
   const [matchSource, setMatchSource] = useState<'backend' | 'demo'>('demo');
@@ -362,6 +365,50 @@ export default function App() {
               onReset={handleReset}
               isLoading={isLoadingMatches}
             />
+          </div>
+        )}
+
+        {/* Tab: API Console & Docs */}
+        {activeTab === 'api' && (
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-4">
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                  Backend API Console & Integration Specs
+                </h1>
+                <p className="mt-1 text-sm text-slate-500">
+                  Live HTTP route testing, Neo4j graph endpoints, schema contracts, and developer handoff.
+                </p>
+              </div>
+
+              {/* Subtabs */}
+              <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+                <button
+                  onClick={() => setApiSubTab('tester')}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                    apiSubTab === 'tester'
+                      ? 'bg-white text-violet-700 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Terminal className="h-3.5 w-3.5" />
+                  <span>Interactive Endpoint Tester</span>
+                </button>
+                <button
+                  onClick={() => setApiSubTab('docs')}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                    apiSubTab === 'docs'
+                      ? 'bg-white text-violet-700 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <BookOpen className="h-3.5 w-3.5" />
+                  <span>Integration Guide & Contracts</span>
+                </button>
+              </div>
+            </div>
+
+            {apiSubTab === 'tester' ? <ApiConsole /> : <HandoffDocs />}
           </div>
         )}
       </main>

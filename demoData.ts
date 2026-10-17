@@ -155,7 +155,7 @@ export function buildDemoGraph(): GraphData {
     });
 
     // Add Skills and HAS_SKILL edges
-    student.skills.forEach((skillName) => {
+    student.skills.forEach((skillName: string) => {
       const skillId = `skill:${skillName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
       if (!nodeMap.has(skillId)) {
         nodeMap.set(skillId, {
@@ -176,7 +176,7 @@ export function buildDemoGraph(): GraphData {
     });
 
     // Add Interests and INTERESTED_IN edges
-    student.interests.forEach((interestName) => {
+    student.interests.forEach((interestName: string) => {
       const interestId = `interest:${interestName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
       if (!nodeMap.has(interestId)) {
         nodeMap.set(interestId, {

@@ -11,7 +11,7 @@ import {
   seedNeo4jGraph
 } from './neo4jClient.js';
 import { findTopMatches } from './matchingEngine.js';
-import { MatchRequest, HealthResponse } from './types.js';
+import { MatchRequest, HealthResponse, StudentProfile } from './types.js';
 import { DEMO_STUDENTS, buildDemoGraph } from './demoData.js';
 
 export const apiRouter = Router();
@@ -67,25 +67,25 @@ apiRouter.get('/students', async (req: Request, res: Response) => {
 
     if (typeof role === 'string' && role.trim()) {
       const qRole = role.toLowerCase().trim();
-      filtered = filtered.filter(s => s.role.toLowerCase().includes(qRole));
+      filtered = filtered.filter((s: StudentProfile) => s.role.toLowerCase().includes(qRole));
     }
 
     if (typeof skill === 'string' && skill.trim()) {
       const qSkill = skill.toLowerCase().trim();
-      filtered = filtered.filter(s =>
-        s.skills.some(sk => sk.toLowerCase().includes(qSkill))
+      filtered = filtered.filter((s: StudentProfile) =>
+        s.skills.some((sk: string) => sk.toLowerCase().includes(qSkill))
       );
     }
 
     if (typeof search === 'string' && search.trim()) {
       const q = search.toLowerCase().trim();
       filtered = filtered.filter(
-        s =>
+        (s: StudentProfile) =>
           s.name.toLowerCase().includes(q) ||
           s.role.toLowerCase().includes(q) ||
           s.goal.toLowerCase().includes(q) ||
-          s.skills.some(sk => sk.toLowerCase().includes(q)) ||
-          s.interests.some(i => i.toLowerCase().includes(q))
+          s.skills.some((sk: string) => sk.toLowerCase().includes(q)) ||
+          s.interests.some((i: string) => i.toLowerCase().includes(q))
       );
     }
 
@@ -226,7 +226,8 @@ apiRouter.post('/match', async (req: Request, res: Response) => {
         sharedInterests: { max: 25, weight: '25%', description: 'Overlap in hackathon theme and domain passions' },
         goalAlignment: { max: 15, weight: '15%', description: 'Alignment in project scope, ambition level, and key technology priorities' }
       },
-      matches
+      matches,
+      recommendations: matches
     });
   } catch (error: any) {
     res.status(500).json({
