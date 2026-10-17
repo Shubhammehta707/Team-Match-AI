@@ -5,7 +5,7 @@
 
 import neo4j, { Driver, Session } from 'neo4j-driver';
 import { DatabaseStatus, StudentProfile, GraphData, GraphNode, GraphEdge } from './types.js';
-import { DEMO_STUDENTS, buildDemoGraph } from './data/demoData.js';
+import { DEMO_STUDENTS, buildDemoGraph } from './demoData.js';
 
 let driver: Driver | null = null;
 let lastKnownStatus: DatabaseStatus = {

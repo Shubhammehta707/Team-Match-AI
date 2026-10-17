@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { StudentProfile, GraphNode, GraphEdge, GraphData } from '../types.js';
+import type { StudentProfile, GraphNode, GraphEdge, GraphData } from './types.js';
 
 export const DEMO_STUDENTS: StudentProfile[] = [
   {

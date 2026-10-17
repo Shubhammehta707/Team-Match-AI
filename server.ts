@@ -7,7 +7,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { apiRouter } from './server/routes/api.js';
+import { apiRouter } from './api.ts';
 
 dotenv.config();
 

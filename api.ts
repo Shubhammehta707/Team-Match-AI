@@ -9,10 +9,10 @@ import {
   fetchStudentsWithFallback,
   fetchGraphWithFallback,
   seedNeo4jGraph
-} from '../neo4jClient.js';
-import { findTopMatches } from '../matchingEngine.js';
-import { MatchRequest, HealthResponse } from '../types.js';
-import { DEMO_STUDENTS, buildDemoGraph } from '../data/demoData.js';
+} from './neo4jClient.js';
+import { findTopMatches } from './matchingEngine.js';
+import { MatchRequest, HealthResponse } from './types.js';
+import { DEMO_STUDENTS, buildDemoGraph } from './demoData.js';
 
 export const apiRouter = Router();
 
