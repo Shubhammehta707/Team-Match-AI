@@ -142,6 +142,16 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
               Base URL: {currentConfig.baseUrl}
             </div>
           )}
+          {currentConfig.status === 'connected' && (
+            <div className="mt-2 border-t border-slate-200 pt-2 text-xs text-slate-600">
+              <span className="font-semibold">
+                {currentConfig.databaseConnected ? 'Neo4j verified' : 'Demo data in use'}
+              </span>
+              {currentConfig.databaseMessage && (
+                <p className="mt-1 break-words text-slate-500">{currentConfig.databaseMessage}</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Form */}
@@ -158,7 +168,8 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
               className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 font-mono focus:bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/15"
             />
             <p className="mt-1 text-[11px] text-slate-500">
-              Leave empty to run entirely with client-side demo matching.
+              By default the app checks this site&apos;s origin. Leave empty to force local demo
+              matching.
             </p>
           </div>
 
@@ -213,9 +224,9 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
           </div>
           <div className="rounded-xl bg-slate-50 border border-slate-200 p-3 font-mono text-[11px] text-slate-600 space-y-1">
             <div><span className="text-emerald-700 font-bold">GET</span>  /api/health <span className="text-slate-400">→ {"{ status: 'ok' }"}</span></div>
-            <div><span className="text-emerald-700 font-bold">GET</span>  /api/students <span className="text-slate-400">→ Array of StudentProfile</span></div>
-            <div><span className="text-emerald-700 font-bold">GET</span>  /api/graph <span className="text-slate-400">→ {"{ nodes, edges }"}</span></div>
-            <div><span className="text-violet-700 font-bold">POST</span> /api/match <span className="text-slate-400">→ {"{ recommendations: [...] }"}</span></div>
+            <div><span className="text-emerald-700 font-bold">GET</span>  /api/students <span className="text-slate-400">→ {"{ success, mode, data: [...] }"}</span></div>
+            <div><span className="text-emerald-700 font-bold">GET</span>  /api/graph <span className="text-slate-400">→ {"{ success, schema, data: { nodes, edges } }"}</span></div>
+            <div><span className="text-violet-700 font-bold">POST</span> /api/match <span className="text-slate-400">→ {"{ success, mode, matches: [...] }"}</span></div>
           </div>
         </div>
       </div>

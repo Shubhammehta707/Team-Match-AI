@@ -22,6 +22,7 @@ interface NetworkGraphProps {
   threshold: number;
   onChangeThreshold: (val: number) => void;
   isLoading?: boolean;
+  dataSource?: 'backend' | 'demo';
 }
 
 export const NetworkGraph: React.FC<NetworkGraphProps> = ({
@@ -32,6 +33,7 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({
   threshold,
   onChangeThreshold,
   isLoading = false,
+  dataSource = 'demo',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
@@ -320,6 +322,9 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({
             </h3>
             <span className="text-xs font-semibold text-violet-700 bg-violet-50 px-2 py-0.5 rounded-full border border-violet-100 font-mono tabular-nums">
               {nodes.length} nodes · {edges.length} connections
+            </span>
+            <span className="text-[11px] font-medium text-slate-500">
+              {dataSource === 'backend' ? 'Backend profiles' : 'Demo graph data'}
             </span>
           </div>
           <p className="mt-0.5 text-xs text-slate-500">

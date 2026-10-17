@@ -113,11 +113,12 @@ The prototype uses fictional profiles for demonstration only.
 
 All profiles are fictional and should not be presented as real users.
 
-## 8. Expected API contract
+## 8. Implemented API contract
 
-The following endpoints are the shared integration target. Confirm which
-ones are actually implemented and tested before describing them as
-operational.
+The combined Express server mounts these endpoints under `/api`. Student
+profiles are returned as `{ success, count, mode, data }`, graph data as
+`{ success, schema, data: { nodes, edges, metadata } }`, and match results as
+`{ success, query, count, mode, matches }`.
 
   -----------------------------------------------------------------------
   Method                  Endpoint                Purpose
@@ -172,22 +173,24 @@ Each recommendation should include:
 -   `role`
 -   `reasons` --- specific explanations grounded in the profile data
 
-The exact response wrapper (for example, `recommendations` or `matches`)
-must be agreed between the frontend and backend and documented
-consistently. Graph edges must reference valid node IDs.
+The frontend accepts the implemented student and match wrappers. The
+interactive Cytoscape view is a student-affinity graph derived from the active
+profiles; the typed `/api/graph` entity graph is available in the API Console.
+Graph API edges must reference valid node IDs.
 
 ## 9. Technology stack
 
-Record the technologies that are actually present in the generated
-application:
+The current repository contains:
 
--   **Frontend:** React (planned; verify in the project)
--   **Graph visualization:** Cytoscape.js or the library actually used
--   **Backend:** Record the server-side runtime actually generated
--   **Graph database:** Neo4j Aura, only if configured and successfully
-    tested
--   **Matching logic:** Record whether the current version uses
-    deterministic scoring, an AI model, or both
+-   **Frontend:** React 19, TypeScript, and Vite
+-   **Graph visualization:** Cytoscape.js
+-   **Backend:** Express 4 on Node.js, served together with the frontend
+-   **Graph database:** Neo4j driver integration is implemented; a live
+    database is used only when credentials are configured and connectivity is
+    verified
+-   **Matching logic:** Deterministic heuristic scoring on the backend and a
+    separate deterministic local fallback; scores are illustrative, not
+    validated success probabilities
 
 Do not publish database credentials, API keys, or secrets in frontend
 code or this README.
@@ -211,6 +214,35 @@ npm run dev
 
 If the project is hosted in Google AI Studio, use its available preview
 and run workflow instead of assuming these commands apply.
+
+### Current repository implementation
+
+The active Vite entry point is `src/main.tsx` (referenced by `index.html`).
+The root `server.ts` serves that frontend and the `/api` routes from `api.ts`.
+The active dashboard uses the backend student response when reachable and
+falls back to the local fictional dataset when it is unavailable. When the
+backend is reachable, match requests go to the backend whether it uses Neo4j
+or its in-memory demo dataset; the response mode is shown in the UI. If the
+backend itself is unavailable, matching falls back to the browser's local
+deterministic engine. The student network visualization is derived from the
+active profiles; `/api/graph` can be inspected in the API Console.
+
+```bash
+npm ci
+npm run dev
+```
+
+Open the URL printed by the server (default port `3000`). To check the project,
+run `npm run lint`, `npm run build`, and `npm run test:backend`. For production,
+build with `npm run build`, then run `npm start` with `NODE_ENV=production` and
+the desired `PORT`.
+
+The optional `.env` file is ignored by Git. Copy `.env.example` to `.env` only
+when configuring a local instance; populate Neo4j variables only with credentials
+from your own database. No Neo4j connection is assumed: health checks report
+`connected: true` only after a live server-info check. `VITE_API_BASE_URL` is a
+public backend URL, not a place for credentials. With no Neo4j variables, the
+application remains usable in demo mode.
 
 ### API configuration
 

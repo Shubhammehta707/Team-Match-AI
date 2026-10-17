@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Database, Activity, RefreshCw, Terminal, Layers, Users, Network, FileText } from 'lucide-react';
-import { HealthResponse } from '../types';
+import { HealthResponse } from './types';
 
 interface NavbarProps {
   activeTab: 'match' | 'students' | 'graph' | 'api' | 'handoff';

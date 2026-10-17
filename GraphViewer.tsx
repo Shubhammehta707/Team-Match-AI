@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Layers, Network, Database, RefreshCw, Filter, Search, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { GraphData, GraphNode, GraphEdge } from '../types';
+import { GraphData, GraphNode, GraphEdge } from './types';
 
 export const GraphViewer: React.FC = () => {
   const [graphData, setGraphData] = useState<GraphData | null>(null);

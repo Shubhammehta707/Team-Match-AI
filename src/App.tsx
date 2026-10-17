@@ -17,6 +17,8 @@ import { MatchResults } from './components/MatchResults';
 import { NetworkGraph } from './components/NetworkGraph';
 import { StudentDetailModal } from './components/StudentDetailModal';
 import { ApiSettingsModal } from './components/ApiSettingsModal';
+import { ApiConsole } from './components/ApiConsole';
+import { StudentDirectory } from './components/StudentDirectory';
 import { Footer } from './components/Footer';
 import { Check, ArrowRight, Sparkles, Network } from 'lucide-react';
 
@@ -29,7 +31,11 @@ const EMPTY_PROFILE: MatchRequest = {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'matching' | 'network' | 'profile'>('dashboard');
+  const [activeTab, setActiveTab] = useState<
+    'dashboard' | 'matching' | 'network' | 'profile' | 'directory' | 'api'
+  >('dashboard');
+  const [students, setStudents] = useState<StudentProfile[]>(DEMO_STUDENTS);
+  const [studentSource, setStudentSource] = useState<'backend' | 'demo'>('demo');
   const [currentUser, setCurrentUser] = useState<MatchRequest>(EMPTY_PROFILE);
   const [matches, setMatches] = useState<MatchRecommendation[]>([]);
   const [matchSource, setMatchSource] = useState<'backend' | 'demo'>('demo');
@@ -51,31 +57,39 @@ export default function App() {
   const formSectionRef = useRef<HTMLDivElement>(null);
   const resultsSectionRef = useRef<HTMLDivElement>(null);
 
-  // Initial data load
-  useEffect(() => {
-    // Generate initial graph dataset from demo cohort
-    const initialGraph = buildStudentGraph(DEMO_STUDENTS, threshold, null);
-    setGraphNodes(initialGraph.nodes);
-    setGraphEdges(initialGraph.edges);
-
-    // Initial check of backend if configured
-    if (apiService.getBaseUrl()) {
-      apiService.checkHealth().then(() => {
-        setApiConfig(apiService.getConfig());
-      });
-    }
-  }, []);
-
   // Update graph when threshold or user changes
   const refreshGraph = useCallback(
     (newThreshold: number, user: MatchRequest | null) => {
       const activeUser = user && user.name.trim() ? user : null;
-      const updatedGraph = buildStudentGraph(DEMO_STUDENTS, newThreshold, activeUser);
+      const updatedGraph = buildStudentGraph(students, newThreshold, activeUser);
       setGraphNodes(updatedGraph.nodes);
       setGraphEdges(updatedGraph.edges);
     },
-    []
+    [students]
   );
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadInitialData = async () => {
+      if (apiService.getBaseUrl()) {
+        await apiService.checkHealth();
+      }
+      const result = await apiService.getStudents();
+      if (cancelled) return;
+
+      setStudents(result.students);
+      setStudentSource(result.source);
+      setApiConfig(apiService.getConfig());
+      const initialGraph = buildStudentGraph(result.students, threshold, null);
+      setGraphNodes(initialGraph.nodes);
+      setGraphEdges(initialGraph.edges);
+    };
+
+    void loadInitialData();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleThresholdChange = (newThreshold: number) => {
     setThreshold(newThreshold);
@@ -90,6 +104,7 @@ export default function App() {
       const response = await apiService.findMatches(profileData);
       setMatches(response.recommendations);
       setMatchSource(response.source || 'demo');
+      setApiConfig(apiService.getConfig());
 
       // Update graph to include user node and connections
       refreshGraph(threshold, profileData);
@@ -141,7 +156,7 @@ export default function App() {
       return;
     }
 
-    const found = DEMO_STUDENTS.find((s) => s.id === studentId);
+    const found = students.find((s) => s.id === studentId);
     if (found) {
       setInspectedStudent(found);
     }
@@ -158,7 +173,7 @@ export default function App() {
 
   const handleInvite = (studentId: string) => {
     setInvitedStudents((prev) => new Set(prev).add(studentId));
-    const target = DEMO_STUDENTS.find((s) => s.id === studentId);
+    const target = students.find((s) => s.id === studentId);
     showToast(`Connected with ${target ? target.name : 'teammate'}!`);
   };
 
@@ -195,7 +210,9 @@ export default function App() {
         {activeTab === 'dashboard' && (
           <div>
             <HeroSection
-              totalProfiles={DEMO_STUDENTS.length}
+              totalProfiles={students.length}
+              roleCount={new Set(students.map((student) => student.role)).size}
+              skillCount={new Set(students.flatMap((student) => student.skills)).size}
               activeMatchesCount={matches.length}
               apiConfig={apiConfig}
               onFindTeamClick={scrollToForm}
@@ -238,6 +255,7 @@ export default function App() {
                   onSelectStudent={handleSelectStudent}
                   threshold={threshold}
                   onChangeThreshold={handleThresholdChange}
+                  dataSource={studentSource}
                 />
               </div>
             </div>
@@ -288,7 +306,7 @@ export default function App() {
                   Student Collaboration Network
                 </h1>
                 <p className="mt-1 text-sm text-slate-500">
-                  Interactive topological graph of all 12 student profiles, skills, and shared interests.
+                  Interactive topological graph of all {students.length} available student profiles, skills, and shared interests.
                 </p>
               </div>
 
@@ -308,15 +326,16 @@ export default function App() {
               onSelectStudent={handleSelectStudent}
               threshold={threshold}
               onChangeThreshold={handleThresholdChange}
+              dataSource={studentSource}
             />
 
             {/* Quick Directory Grid */}
             <div className="mt-8">
               <h2 className="text-base font-bold text-slate-900 mb-3">
-                All Cohort Members ({DEMO_STUDENTS.length})
+                All Cohort Members ({students.length})
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
-                {DEMO_STUDENTS.map((student) => (
+                {students.map((student) => (
                   <button
                     key={student.id}
                     onClick={() => handleSelectStudent(student.id)}
@@ -338,6 +357,22 @@ export default function App() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'directory' && (
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+            <StudentDirectory
+              students={students}
+              source={studentSource}
+              onSelectStudent={handleSelectStudent}
+            />
+          </div>
+        )}
+
+        {activeTab === 'api' && (
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+            <ApiConsole />
           </div>
         )}
 

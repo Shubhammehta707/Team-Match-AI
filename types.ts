@@ -13,6 +13,24 @@ export interface StudentProfile {
   project?: string;
 }
 
+export interface MatchRequest {
+  id?: string;
+  name: string;
+  role: string;
+  skills: string[];
+  interests: string[];
+  goal: string;
+}
+
+export interface DatabaseStatus {
+  configured: boolean;
+  connected: boolean;
+  uri?: string;
+  mode: 'neo4j' | 'demo';
+  message: string;
+  latencyMs?: number;
+}
+
 export interface ScoreBreakdown {
   skillComplementarity: number;
   roleSynergy: number;
@@ -63,14 +81,7 @@ export interface HealthResponse {
   service: string;
   version: string;
   mode: 'neo4j' | 'demo';
-  database: {
-    configured: boolean;
-    connected: boolean;
-    uri?: string;
-    mode: 'neo4j' | 'demo';
-    message: string;
-    latencyMs?: number;
-  };
+  database: DatabaseStatus;
   summary: {
     studentCount: number;
     totalNodes: number;

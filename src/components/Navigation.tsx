@@ -13,8 +13,8 @@ import {
 } from 'lucide-react';
 
 interface NavigationProps {
-  activeTab: 'dashboard' | 'matching' | 'network' | 'profile';
-  onSelectTab: (tab: 'dashboard' | 'matching' | 'network' | 'profile') => void;
+  activeTab: 'dashboard' | 'matching' | 'network' | 'profile' | 'directory' | 'api';
+  onSelectTab: (tab: 'dashboard' | 'matching' | 'network' | 'profile' | 'directory' | 'api') => void;
   apiConfig: ApiConfig;
   onOpenApiSettings: () => void;
   userName?: string;
@@ -30,14 +30,21 @@ export const Navigation: React.FC<NavigationProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
-  const navItems: { id: 'dashboard' | 'matching' | 'network' | 'profile'; label: string }[] = [
+  const navItems: {
+    id: 'dashboard' | 'matching' | 'network' | 'profile' | 'directory' | 'api';
+    label: string;
+  }[] = [
     { id: 'dashboard', label: 'Dashboard' },
     { id: 'matching', label: 'Find Teammates' },
     { id: 'network', label: 'Explore Network' },
+    { id: 'directory', label: 'Students' },
+    { id: 'api', label: 'API Console' },
     { id: 'profile', label: 'My Profile' },
   ];
 
-  const handleNavClick = (tab: 'dashboard' | 'matching' | 'network' | 'profile') => {
+  const handleNavClick = (
+    tab: 'dashboard' | 'matching' | 'network' | 'profile' | 'directory' | 'api'
+  ) => {
     onSelectTab(tab);
     setMobileMenuOpen(false);
   };
@@ -97,7 +104,13 @@ export const Navigation: React.FC<NavigationProps> = ({
             {apiConfig.status === 'connected' ? (
               <>
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span className="text-emerald-700 font-semibold">Backend Connected</span>
+                <span className="text-emerald-700 font-semibold">
+                  {apiConfig.backendMode === 'neo4j' && apiConfig.databaseConnected
+                    ? 'API + Neo4j'
+                    : apiConfig.backendMode === 'demo'
+                    ? 'API Online · Demo Data'
+                    : 'Backend Connected'}
+                </span>
                 {apiConfig.latencyMs !== undefined && (
                   <span className="text-[11px] text-slate-500 font-mono tabular-nums">
                     ({apiConfig.latencyMs}ms)
@@ -143,7 +156,12 @@ export const Navigation: React.FC<NavigationProps> = ({
                 <div className="px-3 py-2 border-b border-slate-100">
                   <div className="text-xs font-bold text-slate-900">{userName || 'Active Hacker'}</div>
                   <div className="text-[11px] text-slate-500 truncate mt-0.5">
-                    Mode: {apiConfig.status === 'connected' ? 'Live API' : 'Demo Mode'}
+                    Mode:
+                    {apiConfig.status !== 'connected'
+                      ? ' Local Demo'
+                      : apiConfig.backendMode === 'neo4j' && apiConfig.databaseConnected
+                      ? ' Neo4j'
+                      : ' Backend Demo Data'}
                   </div>
                 </div>
                 <div className="py-1">

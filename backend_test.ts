@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { DEMO_STUDENTS, buildDemoGraph } from '../server/data/demoData.js';
-import { scoreCandidate, findTopMatches } from '../server/matchingEngine.js';
-import { checkNeo4jConnectivity } from '../server/neo4jClient.js';
-import { MatchRequest } from '../server/types.js';
+import { DEMO_STUDENTS, buildDemoGraph } from './demoData.js';
+import { findTopMatches } from './matchingEngine.js';
+import { checkNeo4jConnectivity } from './neo4jClient.js';
+import { MatchRequest } from './types.js';
 
 async function runTests() {
   console.log('--- Starting TeamMatch AI Backend Automated Tests ---\n');

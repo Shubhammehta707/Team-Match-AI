@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3 text-slate-500 flex-wrap">
-          <span>12 Verified Demo Cohorts</span>
+          <span>Demo fallback available</span>
           <span className="text-slate-300">·</span>
           <span>Explainable Synergy Engine</span>
           <span className="text-slate-300">·</span>

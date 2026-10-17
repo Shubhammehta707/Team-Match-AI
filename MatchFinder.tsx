@@ -17,7 +17,7 @@ import {
   Layers,
   CheckCircle2
 } from 'lucide-react';
-import { StudentProfile, MatchRecommendation } from '../types';
+import { StudentProfile, MatchRecommendation } from './types';
 
 interface MatchFinderProps {
   students: StudentProfile[];

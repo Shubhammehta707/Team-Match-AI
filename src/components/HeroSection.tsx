@@ -15,6 +15,8 @@ import { ApiConfig } from '../types/student';
 
 interface HeroSectionProps {
   totalProfiles: number;
+  roleCount: number;
+  skillCount: number;
   activeMatchesCount: number;
   apiConfig: ApiConfig;
   onFindTeamClick: () => void;
@@ -24,6 +26,8 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   totalProfiles,
+  roleCount,
+  skillCount,
   activeMatchesCount,
   apiConfig,
   onFindTeamClick,
@@ -43,7 +47,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Small AI-powered matching badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50/80 px-3 py-1 text-xs font-semibold text-violet-700 shadow-xs">
               <Sparkles className="h-3.5 w-3.5 text-violet-600" />
-              <span>AI-Powered Teammate Discovery</span>
+              <span>Explainable Teammate Discovery</span>
               <span className="text-violet-300">·</span>
               <span className="text-[11px] font-normal text-violet-600">Explainable Skill Matching</span>
             </div>
@@ -97,10 +101,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-xs font-bold text-slate-800">High Synergy Match Trio</span>
+                  <span className="text-xs font-bold text-slate-800">Illustrative Sample Trio</span>
                 </div>
                 <span className="text-[11px] font-semibold text-violet-700 bg-violet-50 px-2 py-0.5 rounded-full border border-violet-100">
-                  96% Squad Score
+                  96% illustrative
                 </span>
               </div>
 
@@ -182,65 +186,69 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 {totalProfiles}
               </span>
               <span className="text-[11px] font-medium text-slate-400">
-                {apiConfig.status === 'connected' ? 'registered' : 'verified demo'}
+                {apiConfig.status === 'connected' && apiConfig.backendMode === 'neo4j'
+                  ? 'Neo4j profiles'
+                  : 'demo profiles'}
               </span>
             </div>
-            <div className="mt-1 text-[11px] text-slate-500">Across 9 engineering tracks</div>
+            <div className="mt-1 text-[11px] text-slate-500">
+              Across {roleCount} role tracks
+            </div>
           </div>
 
           {/* Card 2: Available Teammates */}
           <div className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs hover:shadow-md hover:border-emerald-200 hover:-translate-y-0.5 transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">Available Teammates</span>
+              <span className="text-xs font-semibold text-slate-500">Candidate Profiles</span>
               <div className="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 group-hover:scale-105 transition-transform">
                 <Sparkles className="h-4 w-4" />
               </div>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tabular-nums">
-                {Math.max(8, totalProfiles - 4)}
+                {totalProfiles}
               </span>
               <span className="text-[11px] font-medium text-emerald-600 font-semibold">
-                actively seeking
+                in directory
               </span>
             </div>
-            <div className="mt-1 text-[11px] text-slate-500">Ready for team formation</div>
+            <div className="mt-1 text-[11px] text-slate-500">Profiles available for matching</div>
           </div>
 
           {/* Card 3: Successful Matches */}
           <div className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs hover:shadow-md hover:border-sky-200 hover:-translate-y-0.5 transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">Successful Matches</span>
+              <span className="text-xs font-semibold text-slate-500">Recommendations</span>
               <div className="h-9 w-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center border border-sky-100 group-hover:scale-105 transition-transform">
                 <CheckCircle className="h-4 w-4" />
               </div>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tabular-nums">
-                {activeMatchesCount > 0 ? activeMatchesCount : 3}
+                {activeMatchesCount}
               </span>
               <span className="text-[11px] font-medium text-slate-400">
-                {activeMatchesCount > 0 ? 'top ranked' : 'per recommendation'}
+                {activeMatchesCount === 1 ? 'result' : 'results'}
               </span>
             </div>
-            <div className="mt-1 text-[11px] text-slate-500">Balanced squad recommendations</div>
+            <div className="mt-1 text-[11px] text-slate-500">Illustrative compatibility scores</div>
           </div>
 
           {/* Card 4: Skills Connected */}
           <div className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs hover:shadow-md hover:border-amber-200 hover:-translate-y-0.5 transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">Skills Connected</span>
+              <span className="text-xs font-semibold text-slate-500">Unique Skills</span>
               <div className="h-9 w-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100 group-hover:scale-105 transition-transform">
                 <Code2 className="h-4 w-4" />
               </div>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tabular-nums">
-                28
+                {skillCount}
               </span>
               <span className="text-[11px] font-medium text-slate-400">skill domains</span>
             </div>
-            <div className="mt-1 text-[11px] text-slate-500">From AI/ML to UI Design</div>
+            <div className="mt-1 text-[11px] text-slate-500">Across student profiles</div>
           </div>
         </div>
       </div>

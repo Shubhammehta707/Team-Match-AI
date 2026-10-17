@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Users, Search, Filter, Sparkles, FolderGit2, Check, Copy } from 'lucide-react';
-import { StudentProfile } from '../types';
+import { StudentProfile } from './types';
 
 interface StudentDirectoryProps {
   students: StudentProfile[];

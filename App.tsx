@@ -4,12 +4,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Navbar } from './components/Navbar';
-import { MatchFinder } from './components/MatchFinder';
-import { StudentDirectory } from './components/StudentDirectory';
-import { GraphViewer } from './components/GraphViewer';
-import { ApiConsole } from './components/ApiConsole';
-import { HandoffDocs } from './components/HandoffDocs';
+import { Navbar } from './Navbar';
+import { MatchFinder } from './MatchFinder';
+import { StudentDirectory } from './StudentDirectory';
+import { GraphViewer } from './GraphViewer';
+import { ApiConsole } from './ApiConsole';
+import { HandoffDocs } from './HandoffDocs';
 import { StudentProfile, HealthResponse } from './types';
 import { AlertCircle, Server } from 'lucide-react';
 

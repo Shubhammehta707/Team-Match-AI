@@ -84,4 +84,7 @@ export interface ApiConfig {
   latencyMs?: number;
   lastChecked?: string;
   errorMessage?: string;
+  backendMode?: 'neo4j' | 'demo';
+  databaseConnected?: boolean;
+  databaseMessage?: string;
 }

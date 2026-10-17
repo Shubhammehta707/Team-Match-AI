@@ -107,7 +107,7 @@ export const MatchResults: React.FC<MatchResultsProps> = ({
         <div className="flex items-center gap-2 text-xs text-slate-500">
           <span className="inline-block h-2 w-2 rounded-full bg-violet-500" />
           <span className="font-medium text-slate-700">
-            {source === 'backend' ? 'Live API Match Engine' : 'Demo Local Matching'}
+            {source === 'backend' ? 'Live API Match Engine' : 'Demo Mode Recommendations'}
           </span>
           <span className="text-slate-300">·</span>
           <span className="text-[11px] text-slate-400 italic">Illustrative Scores</span>
