@@ -30,6 +30,13 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
     latencyMs?: number;
   } | null>(null);
 
+  React.useEffect(() => {
+    if (isOpen) {
+      setUrlInput(apiService.getConfig().baseUrl);
+      setTestResult(null);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleTestAndSave = async (e: React.FormEvent) => {

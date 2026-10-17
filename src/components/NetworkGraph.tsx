@@ -39,30 +39,30 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
 
+  // Calculate visible nodes based on active track and search filters
+  let visibleNodes =
+    activeRoleFilter === 'All'
+      ? nodes
+      : nodes.filter(
+          (n) => n.isUser || n.role.toLowerCase() === activeRoleFilter.toLowerCase()
+        );
+
+  const query = searchQuery.trim().toLowerCase();
+  if (query) {
+    visibleNodes = visibleNodes.filter(
+      (n) =>
+        n.label.toLowerCase().includes(query) ||
+        n.skills.some((s) => s.toLowerCase().includes(query)) ||
+        n.role.toLowerCase().includes(query) ||
+        n.interests.some((i) => i.toLowerCase().includes(query))
+    );
+  }
+
   // Initialize and update Cytoscape
   useEffect(() => {
     if (!containerRef.current || nodes.length === 0) return;
 
-    // Filter nodes by role if active
-    let filteredNodes =
-      activeRoleFilter === 'All'
-        ? nodes
-        : nodes.filter(
-            (n) => n.isUser || n.role.toLowerCase() === activeRoleFilter.toLowerCase()
-          );
-
-    // Filter nodes by search query if any
-    const query = searchQuery.trim().toLowerCase();
-    if (query) {
-      filteredNodes = filteredNodes.filter(
-        (n) =>
-          n.label.toLowerCase().includes(query) ||
-          n.skills.some((s) => s.toLowerCase().includes(query)) ||
-          n.role.toLowerCase().includes(query) ||
-          n.interests.some((i) => i.toLowerCase().includes(query))
-      );
-    }
-
+    const filteredNodes = visibleNodes;
     const validNodeIds = new Set(filteredNodes.map((n) => n.id));
     const filteredEdges = edges.filter(
       (e) => validNodeIds.has(e.source) && validNodeIds.has(e.target)
@@ -428,6 +428,27 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({
         )}
 
         <div ref={containerRef} className="h-full w-full" />
+
+        {/* Empty state when search or role filters match 0 nodes */}
+        {visibleNodes.length === 0 && !isLoading && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center bg-white/90 backdrop-blur-xs">
+            <Search className="h-8 w-8 text-slate-300 mb-2" />
+            <h4 className="text-sm font-bold text-slate-800">No matching student nodes</h4>
+            <p className="text-xs text-slate-500 mt-1 max-w-xs">
+              No students found matching your search term or role filter.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery('');
+                setActiveRoleFilter('All');
+              }}
+              className="mt-3 px-3 py-1.5 rounded-lg bg-violet-600 text-white text-xs font-semibold hover:bg-violet-700 transition-colors cursor-pointer"
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
 
         {/* Hovered Node Floating Card */}
         {hoveredNode && (

@@ -2,5 +2,7 @@
   "name": "TeamMatch AI - Hackathon Teammate Recommendation Engine",
   "description": "Backend service and interactive dashboard for matching student hackathon teammates based on skill complementarity, shared interests, and project goal alignment with Neo4j graph fallback.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

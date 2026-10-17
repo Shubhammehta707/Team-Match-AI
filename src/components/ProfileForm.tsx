@@ -189,24 +189,30 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           </button>
 
           {showPresetsMenu && (
-            <div className="absolute right-0 mt-2 w-72 origin-top-right rounded-2xl border border-slate-200 bg-white p-2 shadow-xl z-30 animate-in fade-in zoom-in-95">
-              <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Choose a pre-filled profile
+            <>
+              <div
+                className="fixed inset-0 z-20"
+                onClick={() => setShowPresetsMenu(false)}
+              />
+              <div className="absolute right-0 mt-2 w-72 origin-top-right rounded-2xl border border-slate-200 bg-white p-2 shadow-xl z-30 animate-in fade-in zoom-in-95">
+                <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Choose a pre-filled profile
+                </div>
+                {PRESET_DEMO_PROFILES.map((preset, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleLoadPreset(preset)}
+                    className="w-full text-left rounded-xl p-2.5 text-xs text-slate-700 hover:bg-violet-50/80 hover:text-violet-900 transition-colors cursor-pointer"
+                  >
+                    <div className="font-semibold text-slate-900">{preset.label}</div>
+                    <div className="text-[11px] text-slate-500 truncate mt-0.5">
+                      {preset.profile.role} · {preset.profile.skills.slice(0, 3).join(', ')}
+                    </div>
+                  </button>
+                ))}
               </div>
-              {PRESET_DEMO_PROFILES.map((preset, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => handleLoadPreset(preset)}
-                  className="w-full text-left rounded-xl p-2.5 text-xs text-slate-700 hover:bg-violet-50/80 hover:text-violet-900 transition-colors cursor-pointer"
-                >
-                  <div className="font-semibold text-slate-900">{preset.label}</div>
-                  <div className="text-[11px] text-slate-500 truncate mt-0.5">
-                    {preset.profile.role} · {preset.profile.skills.slice(0, 3).join(', ')}
-                  </div>
-                </button>
-              ))}
-            </div>
+            </>
           )}
         </div>
       </div>
