@@ -149,17 +149,11 @@ export default function App() {
 
   const handleFocusInGraph = (studentId: string) => {
     setSelectedStudentId(studentId);
-    if (activeTab === 'profile') {
-      setActiveTab('dashboard');
+    // Switch to network or scroll down to graph section
+    const graphElement = document.getElementById('network-graph-section');
+    if (graphElement) {
+      graphElement.scrollIntoView({ behavior: 'smooth' });
     }
-    setTimeout(() => {
-      const graphElement = document.getElementById('network-graph-section');
-      if (graphElement) {
-        graphElement.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        setActiveTab('network');
-      }
-    }, 60);
   };
 
   const handleInvite = (studentId: string) => {
@@ -281,18 +275,6 @@ export default function App() {
                   isLoading={isLoadingMatches}
                 />
               </div>
-            </div>
-
-            {/* Interactive Network Graph */}
-            <div id="network-graph-section" className="pt-4 scroll-mt-20">
-              <NetworkGraph
-                nodes={graphNodes}
-                edges={graphEdges}
-                selectedStudentId={selectedStudentId}
-                onSelectStudent={handleSelectStudent}
-                threshold={threshold}
-                onChangeThreshold={handleThresholdChange}
-              />
             </div>
           </div>
         )}

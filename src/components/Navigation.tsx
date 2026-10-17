@@ -139,18 +139,13 @@ export const Navigation: React.FC<NavigationProps> = ({
             </button>
 
             {userDropdownOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-40"
-                  onClick={() => setUserDropdownOpen(false)}
-                />
-                <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-slate-200 bg-white p-2 shadow-lg z-50 animate-in fade-in zoom-in-95">
-                  <div className="px-3 py-2 border-b border-slate-100">
-                    <div className="text-xs font-bold text-slate-900">{userName || 'Active Hacker'}</div>
-                    <div className="text-[11px] text-slate-500 truncate mt-0.5">
-                      Mode: {apiConfig.status === 'connected' ? 'Live API' : 'Demo Mode'}
-                    </div>
+              <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-slate-200 bg-white p-2 shadow-lg z-50 animate-in fade-in zoom-in-95">
+                <div className="px-3 py-2 border-b border-slate-100">
+                  <div className="text-xs font-bold text-slate-900">{userName || 'Active Hacker'}</div>
+                  <div className="text-[11px] text-slate-500 truncate mt-0.5">
+                    Mode: {apiConfig.status === 'connected' ? 'Live API' : 'Demo Mode'}
                   </div>
+                </div>
                 <div className="py-1">
                   <button
                     onClick={() => {
@@ -174,8 +169,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                   </button>
                 </div>
               </div>
-            </>
-          )}
+            )}
           </div>
 
           {/* Mobile Hamburger Button */}

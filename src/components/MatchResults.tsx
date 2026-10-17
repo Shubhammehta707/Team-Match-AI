@@ -192,7 +192,7 @@ export const MatchResults: React.FC<MatchResultsProps> = ({
                   <span className="font-bold text-slate-400 text-[11px] uppercase tracking-wider shrink-0">
                     Skills:
                   </span>
-                  {(match.skills || []).map((skill) => (
+                  {match.skills.map((skill) => (
                     <span
                       key={skill}
                       className="rounded-md bg-slate-100 text-slate-700 px-2 py-0.5 text-xs font-medium border border-slate-200/60"
@@ -206,7 +206,7 @@ export const MatchResults: React.FC<MatchResultsProps> = ({
                   <span className="font-bold text-slate-400 text-[11px] uppercase tracking-wider shrink-0">
                     Interests:
                   </span>
-                  {(match.interests || []).map((interest) => (
+                  {match.interests.map((interest) => (
                     <span
                       key={interest}
                       className="rounded-md bg-indigo-50 text-indigo-700 px-2 py-0.5 text-xs font-medium border border-indigo-100"
@@ -234,7 +234,7 @@ export const MatchResults: React.FC<MatchResultsProps> = ({
                   <span>Why this teammate is recommended:</span>
                 </div>
                 <ul className="space-y-1.5 text-xs text-slate-600">
-                  {(match.reasons || []).map((reason, rIdx) => (
+                  {match.reasons.map((reason, rIdx) => (
                     <li key={rIdx} className="flex items-start gap-2">
                       <span className="text-violet-600 font-bold shrink-0 mt-0.5">•</span>
                       <span className="leading-relaxed">{reason}</span>
