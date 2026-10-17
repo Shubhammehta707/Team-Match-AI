@@ -1,0 +1,6 @@
+{
+  "name": "TeamMatch AI",
+  "description": "Student hackathon teammate matching platform with skill-based explainable recommendations and interactive student connection network.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
